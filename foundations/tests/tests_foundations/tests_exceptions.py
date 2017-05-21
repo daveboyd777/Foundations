@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import inspect
 import itertools
@@ -105,9 +105,9 @@ class TestExtractStack(unittest.TestCase):
             self.assertIsInstance(stack, list)
             for frame, file_name, line_number, name, context, index in stack:
                 self.assertIsInstance(frame, types.FrameType)
-                self.assertIsInstance(file_name, unicode)
+                self.assertIsInstance(file_name, str)
                 self.assertIsInstance(line_number, int)
-                self.assertIsInstance(name, unicode)
+                self.assertIsInstance(name, str)
                 self.assertIsInstance(context, list)
                 self.assertIsInstance(index, int)
 
@@ -166,8 +166,8 @@ class TestExtractLocals(unittest.TestCase):
             self.assertIsInstance(extractedLocals, list)
             for frame, locals in extractedLocals:
                 self.assertIsInstance(frame, tuple)
-                self.assertIsInstance(frame[0], unicode)
-                self.assertIsInstance(frame[1], unicode)
+                self.assertIsInstance(frame[0], str)
+                self.assertIsInstance(frame[1], str)
                 self.assertIsInstance(frame[2], int)
 
                 arguments, nameless_args, keyword_args, locals = locals
@@ -216,7 +216,7 @@ class TestFormatException(unittest.TestCase):
             output = foundations.exceptions.format_exception(*sys.exc_info())
             self.assertIsInstance(output, list)
             for line in output:
-                self.assertIsInstance(line, unicode)
+                self.assertIsInstance(line, str)
 
 
 class TestFormatReport(unittest.TestCase):
@@ -237,7 +237,7 @@ class TestFormatReport(unittest.TestCase):
             self.assertIsInstance(frames, list)
             self.assertIsInstance(trcback, list)
             for line in itertools.chain(header, frames, trcback):
-                self.assertIsInstance(line, unicode)
+                self.assertIsInstance(line, str)
 
 
 class TestInstallExceptionHandler(unittest.TestCase):

@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import os
 import platform
@@ -99,7 +99,7 @@ def get_version_rank(version):
     :rtype: int
     """
 
-    tokens = list(foundations.common.unpack_default(filter(any, re.split("\.|-|,", version)), length=4, default=0))
+    tokens = list(foundations.common.unpack_default(list(filter(any, re.split("\.|-|,", version))), length=4, default=0))
     rank = sum((int(1000 ** i) * int(tokens[-i]) for i in range(len(tokens), 0, -1)))
     LOGGER.debug("> Rank: '{0}'.".format(rank))
     return rank
@@ -142,8 +142,8 @@ def get_common_ancestor(*args):
     :rtype: iterable
     """
 
-    array = map(set, zip(*args))
-    divergence = filter(lambda i: len(i) > 1, array)
+    array = list(map(set, list(zip(*args))))
+    divergence = [i for i in array if len(i) > 1]
     if divergence:
         ancestor = foundations.common.get_first_item(args)[:array.index(foundations.common.get_first_item(divergence))]
     else:
@@ -260,7 +260,7 @@ def replace(string, data):
     :rtype: unicode
     """
 
-    for old, new in data.iteritems():
+    for old, new in data.items():
         string = string.replace(old, new)
     return string
 

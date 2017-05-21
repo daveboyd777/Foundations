@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import inspect
 import sys
@@ -94,7 +94,7 @@ class TestIsReadOnly(unittest.TestCase):
         Tests :func:`foundations.trace.is_read_only` definition.
         """
 
-        self.assertTrue(foundations.trace.is_read_only(unicode))
+        self.assertTrue(foundations.trace.is_read_only(str))
         self.assertTrue(foundations.trace.is_read_only(""))
         self.assertTrue(foundations.trace.is_read_only(dict))
         self.assertTrue(foundations.trace.is_read_only(dict()))
@@ -247,16 +247,16 @@ class TestTraceWalker(unittest.TestCase):
         module = foundations.tests.tests_foundations.resources.dummy
         members = list(foundations.trace.trace_walker(module))
 
-        for method in TRACABLE_METHODS.itervalues():
+        for method in TRACABLE_METHODS.values():
             self.assertIn((Dummy, method), members)
 
-        for method in UNTRACABLE_METHODS.itervalues():
+        for method in UNTRACABLE_METHODS.values():
             self.assertIn((Dummy, method), members)
 
-        for definition in TRACABLE_DEFINITIONS.itervalues():
+        for definition in TRACABLE_DEFINITIONS.values():
             self.assertIn((None, definition), members)
 
-        for definition in UNTRACABLE_DEFINITIONS.itervalues():
+        for definition in UNTRACABLE_DEFINITIONS.values():
             self.assertIn((None, definition), members)
 
         for accessor in (Dummy.attribute.fget, Dummy.attribute.fset, Dummy.attribute.fdel):
@@ -339,7 +339,7 @@ class TestIsClassMethod(unittest.TestCase):
         """
 
         for key, value in {Dummy.class_method: True, Dummy.public_method: False,
-                           Dummy.static_method: False}.iteritems():
+                           Dummy.static_method: False}.items():
             self.assertEqual(foundations.trace.is_class_method(key), value)
 
 
@@ -353,7 +353,7 @@ class TestFormatArgument(unittest.TestCase):
         Tests :func:`foundations.trace.format_argument` definition.
         """
 
-        self.assertEqual(foundations.trace.format_argument(("x", range(3))), "x=[0, 1, 2]")
+        self.assertEqual(foundations.trace.format_argument(("x", list(range(3)))), "x=[0, 1, 2]")
 
 
 class TestValidateTracer(unittest.TestCase):
@@ -436,7 +436,7 @@ class TestTraceFunction(unittest.TestCase):
         """
 
         module = foundations.tests.tests_foundations.resources.dummy
-        for name, function in TRACABLE_DEFINITIONS.iteritems():
+        for name, function in TRACABLE_DEFINITIONS.items():
             self.assertFalse(foundations.trace.is_traced(function))
             self.assertTrue(foundations.trace.trace_function(module, function))
             self.assertTrue(foundations.trace.is_traced(getattr(module, name)))
@@ -454,7 +454,7 @@ class TestUntraceFunction(unittest.TestCase):
         """
 
         module = foundations.tests.tests_foundations.resources.dummy
-        for name, function in TRACABLE_DEFINITIONS.iteritems():
+        for name, function in TRACABLE_DEFINITIONS.items():
             self.assertFalse(foundations.trace.is_traced(function))
             foundations.trace.trace_function(module, function)
             self.assertTrue(foundations.trace.untrace_function(module, getattr(module, name)))
@@ -472,13 +472,13 @@ class TestTraceMethod(unittest.TestCase):
         Tests :func:`foundations.trace.trace_method` definition.
         """
 
-        for name, method in TRACABLE_METHODS.iteritems():
+        for name, method in TRACABLE_METHODS.items():
             self.assertFalse(foundations.trace.is_traced(method))
             self.assertTrue(foundations.trace.trace_method(Dummy, method))
             self.assertTrue(foundations.trace.is_traced(getattr(Dummy, name)))
             foundations.trace.untrace_method(Dummy, getattr(Dummy, name))
 
-        for name, method in UNTRACABLE_METHODS.iteritems():
+        for name, method in UNTRACABLE_METHODS.items():
             self.assertFalse(foundations.trace.is_traced(method))
             self.assertFalse(foundations.trace.trace_method(Dummy, getattr(Dummy, name)))
             self.assertFalse(foundations.trace.is_traced(getattr(Dummy, name)))
@@ -494,14 +494,14 @@ class TestUntraceMethod(unittest.TestCase):
         Tests :func:`foundations.trace.untrace_method` definition.
         """
 
-        for name, method in TRACABLE_METHODS.iteritems():
+        for name, method in TRACABLE_METHODS.items():
             self.assertFalse(foundations.trace.is_traced(method))
             foundations.trace.trace_method(Dummy, method)
             self.assertTrue(foundations.trace.untrace_method(Dummy, getattr(Dummy, name)))
             self.assertFalse(foundations.trace.is_traced(getattr(Dummy, name)))
             self.assertEqual(method, getattr(Dummy, name))
 
-        for name, method in UNTRACABLE_METHODS.iteritems():
+        for name, method in UNTRACABLE_METHODS.items():
             self.assertFalse(foundations.trace.is_traced(method))
             foundations.trace.trace_method(Dummy, method)
             self.assertFalse(foundations.trace.untrace_method(Dummy, getattr(Dummy, name)))
@@ -559,10 +559,10 @@ class TestTraceClass(unittest.TestCase):
         self.assertTrue(foundations.trace.trace_class(Dummy))
         self.assertTrue(foundations.trace.is_traced(Dummy))
 
-        for method in TRACABLE_METHODS.iterkeys():
+        for method in TRACABLE_METHODS.keys():
             self.assertTrue(foundations.trace.is_traced(getattr(Dummy, method)))
 
-        for method in UNTRACABLE_METHODS.iterkeys():
+        for method in UNTRACABLE_METHODS.keys():
             self.assertFalse(foundations.trace.is_traced(getattr(Dummy, method)))
 
         for name, accessor in inspect.getmembers(Dummy, lambda x: type(x) is property):
@@ -599,11 +599,11 @@ class TestUntraceClass(unittest.TestCase):
         self.assertTrue(foundations.trace.untrace_class(Dummy))
         self.assertFalse(foundations.trace.is_traced(Dummy))
 
-        for name, method in TRACABLE_METHODS.iteritems():
+        for name, method in TRACABLE_METHODS.items():
             self.assertFalse(foundations.trace.is_traced(method))
             self.assertEqual(method, getattr(Dummy, name))
 
-        for name, method in UNTRACABLE_METHODS.iteritems():
+        for name, method in UNTRACABLE_METHODS.items():
             self.assertFalse(foundations.trace.is_traced(method))
             self.assertEqual(method, getattr(Dummy, name))
 
@@ -627,10 +627,10 @@ class TestTraceModule(unittest.TestCase):
         self.assertTrue(foundations.trace.trace_module(module))
         self.assertTrue(foundations.trace.is_traced(module))
 
-        for name, definition in TRACABLE_DEFINITIONS.iteritems():
+        for name, definition in TRACABLE_DEFINITIONS.items():
             self.assertTrue(foundations.trace.is_traced(getattr(module, name)))
 
-        for name, definition in UNTRACABLE_DEFINITIONS.iteritems():
+        for name, definition in UNTRACABLE_DEFINITIONS.items():
             self.assertFalse(foundations.trace.is_traced(getattr(module, name)))
 
         self.assertIn(module, foundations.trace.REGISTERED_MODULES)
@@ -664,11 +664,11 @@ class TestUntraceModule(unittest.TestCase):
         foundations.trace.trace_module(module)
         self.assertTrue(foundations.trace.untrace_module(module))
 
-        for name, definition in TRACABLE_DEFINITIONS.iteritems():
+        for name, definition in TRACABLE_DEFINITIONS.items():
             self.assertFalse(foundations.trace.is_traced(getattr(module, name)))
             self.assertEqual(definition, getattr(module, name))
 
-        for name, definition in UNTRACABLE_DEFINITIONS.iteritems():
+        for name, definition in UNTRACABLE_DEFINITIONS.items():
             self.assertFalse(foundations.trace.is_traced(getattr(module, name)))
             self.assertEqual(definition, getattr(module, name))
 

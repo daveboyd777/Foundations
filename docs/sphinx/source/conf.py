@@ -49,8 +49,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"Foundations"
-copyright = u"2008 - 2014, Thomas Mansencal"
+project = "Foundations"
+copyright = "2008 - 2014, Thomas Mansencal"
 
 # The version info for the project you"re documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -185,8 +185,8 @@ htmlhelp_basename = "FoundationsDoc"
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "Foundations.tex", u"Foundations Documentation",
-     u"Thomas Mansencal", "manual"),
+    ("index", "Foundations.tex", "Foundations Documentation",
+     "Thomas Mansencal", "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -217,8 +217,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ("index", "foundations", u"Foundations Documentation",
-     [u"Thomas Mansencal"], 1)
+    ("index", "foundations", "Foundations Documentation",
+     ["Thomas Mansencal"], 1)
 ]
 
 # Example configuration for intersphinx: refer to the Python standard library.

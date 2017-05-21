@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import sys
 
@@ -204,7 +204,7 @@ class TestGetHostAddress(unittest.TestCase):
         Tests :func:`foundations.common.get_host_address` definition.
         """
 
-        self.assertIsInstance(foundations.common.get_host_address(), unicode)
+        self.assertIsInstance(foundations.common.get_host_address(), str)
         self.assertEqual(foundations.common.get_host_address(-1), foundations.common.DEFAULT_HOST_IP)
 
 

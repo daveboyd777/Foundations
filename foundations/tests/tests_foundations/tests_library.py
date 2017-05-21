@@ -13,7 +13,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import ctypes
 import os
@@ -100,7 +100,7 @@ class TestLibrary(unittest.TestCase):
         Tests :meth:`foundations.library.Library.bind_function` method.
         """
 
-        for name, path in LIBRARIES.iteritems():
+        for name, path in LIBRARIES.items():
             library = Library(path)
             library.functions = LIBRARIES_FUNCTIONS[name]
             for function in LIBRARIES_FUNCTIONS[name]:
@@ -113,7 +113,7 @@ class TestLibrary(unittest.TestCase):
         Tests :meth:`foundations.library.Library.bind_library` method.
         """
 
-        for name, path in LIBRARIES.iteritems():
+        for name, path in LIBRARIES.items():
             library = Library(path, bind_library=False)
             library.functions = LIBRARIES_FUNCTIONS[name]
             library.bind_library()
@@ -125,9 +125,9 @@ class TestLibrary(unittest.TestCase):
         Tests :class:`foundations.library.Library` class binding.
         """
 
-        for name, path in LIBRARIES.iteritems():
+        for name, path in LIBRARIES.items():
             library = Library(path, LIBRARIES_FUNCTIONS[name])
-            for function, value in LIBRARIES_TESTS_CASES[name].iteritems():
+            for function, value in LIBRARIES_TESTS_CASES[name].items():
                 self.assertEqual(getattr(library, function)(), value)
 
 

@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import functools
 import sys
@@ -115,7 +115,7 @@ def memoize(cache=None):
             """
 
             if kwargs:
-                key = args, frozenset(kwargs.iteritems())
+                key = args, frozenset(iter(kwargs.items()))
             else:
                 key = args
 

@@ -15,7 +15,7 @@
     PyQt4 Model View Programming Tutorials by Yasin Uludag: http://www.yasinuludag.com/blog/?p=98
 """
 
-from __future__ import unicode_literals
+
 
 import re
 import weakref
@@ -365,7 +365,7 @@ class AbstractNode(foundations.data_structures.Structure):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format("name", value)
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format("name", value)
         self.__name = value
 
     @name.deleter
@@ -447,7 +447,7 @@ class AbstractNode(foundations.data_structures.Structure):
         :rtype: list
         """
 
-        return [attribute for attribute, value in self.iteritems() if issubclass(value.__class__, Attribute)]
+        return [attribute for attribute, value in self.items() if issubclass(value.__class__, Attribute)]
 
     def get_attributes(self):
         """
@@ -463,7 +463,7 @@ class AbstractNode(foundations.data_structures.Structure):
         :rtype: list
         """
 
-        return [attribute for attribute in self.itervalues() if issubclass(attribute.__class__, Attribute)]
+        return [attribute for attribute in self.values() if issubclass(attribute.__class__, Attribute)]
 
     def attribute_exists(self, name):
         """

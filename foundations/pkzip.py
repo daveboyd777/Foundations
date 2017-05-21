@@ -14,9 +14,9 @@
 
 """
 
-from __future__ import unicode_literals
 
-from cStringIO import StringIO
+
+from io import StringIO
 import os
 import zipfile
 
@@ -85,7 +85,7 @@ class Pkzip(object):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "archive", value)
             assert os.path.exists(value), "'{0}' attribute: '{1}' file doesn't exists!".format("archive", value)
         self.__archive = value

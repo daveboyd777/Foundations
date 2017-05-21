@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import pickle
 import re
@@ -136,7 +136,7 @@ class TestAbstractNode(unittest.TestCase):
         attributes = {"attributeA": Attribute(), "attributeB": Attribute()}
 
         node_a = AbstractNode("MyNodeA", **attributes)
-        for attribute in attributes.itervalues():
+        for attribute in attributes.values():
             self.assertIn(attribute, node_a.get_attributes())
 
     def test_has_attribute(self):
@@ -160,7 +160,7 @@ class TestAbstractNode(unittest.TestCase):
         attributes = {"attributeA": Attribute(), "attributeB": Attribute()}
 
         node_a = AbstractNode("MyNodeA")
-        for attribute, value in attributes.iteritems():
+        for attribute, value in attributes.items():
             self.assertTrue(node_a.add_attribute(attribute, value))
             self.assertTrue(node_a.attribute_exists(attribute))
 
@@ -172,7 +172,7 @@ class TestAbstractNode(unittest.TestCase):
         attributes = {"attributeA": Attribute(), "attributeB": Attribute()}
 
         node_a = AbstractNode("MyNodeA")
-        for attribute, value in attributes.iteritems():
+        for attribute, value in attributes.items():
             self.assertTrue(node_a.add_attribute(attribute, value))
             self.assertTrue(node_a.remove_attribute(attribute))
             self.assertFalse(node_a.attribute_exists(attribute))
@@ -446,7 +446,7 @@ class TestAbstractCompositeNode(unittest.TestCase):
         node_a = AbstractCompositeNode("MyNodeA")
         node_b = AbstractCompositeNode("MyNodeB", node_a)
         node_c = AbstractCompositeNode("MyNodeC", node_a)
-        self.assertIsInstance(node_a.list_node(), unicode)
+        self.assertIsInstance(node_a.list_node(), str)
 
     def test_abstract_composite_node_pickle(self):
         """

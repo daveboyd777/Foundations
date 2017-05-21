@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import functools
 import hashlib
@@ -85,9 +85,9 @@ def to_unicode(data, encoding=Constants.default_codec, errors=Constants.codec_er
         return data
     else:
         try:
-            return unicode(data, encoding, errors)
+            return str(data, encoding, errors)
         except TypeError:
-            return unicode(str(data), encoding, errors)
+            return str(str(data), encoding, errors)
 
 
 def _LogRecord__getattribute__(self, attribute):
@@ -317,17 +317,17 @@ def tracer(object):
 
         trace_name = foundations.trace.get_trace_name(object)
 
-        code = object.func_code
+        code = object.__code__
         args_count = code.co_argcount
         args_names = code.co_varnames[:args_count]
-        function_defaults = object.func_defaults or list()
-        args_defaults = dict(zip(args_names[-len(function_defaults):], function_defaults))
+        function_defaults = object.__defaults__ or list()
+        args_defaults = dict(list(zip(args_names[-len(function_defaults):], function_defaults)))
 
-        positional_args = map(foundations.trace.format_argument, zip(args_names, args))
+        positional_args = list(map(foundations.trace.format_argument, list(zip(args_names, args))))
         defaulted_args = [foundations.trace.format_argument((name, args_defaults[name]))
                           for name in args_names[len(args):] if name not in kwargs]
-        nameless_args = map(repr, args[args_count:])
-        keyword_args = map(foundations.trace.format_argument, kwargs.items())
+        nameless_args = list(map(repr, args[args_count:]))
+        keyword_args = list(map(foundations.trace.format_argument, list(kwargs.items())))
         TRACER_LOGGING_FUNCTION(indent_message("---> {0}({1}) <---".format(trace_name,
                                                                            ", ".join(itertools.chain(positional_args,
                                                                                                      defaulted_args,

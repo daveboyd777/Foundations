@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import os
 import platform
@@ -63,11 +63,11 @@ class TestToString(unittest.TestCase):
         Tests :func:`foundations.strings.to_string` definition.
         """
 
-        self.assertIsInstance(foundations.strings.to_string(str("myData")), unicode)
-        self.assertIsInstance(foundations.strings.to_string(u"myData"), unicode)
-        self.assertIsInstance(foundations.strings.to_string(0), unicode)
-        self.assertIsInstance(foundations.strings.to_string(None), unicode)
-        self.assertIsInstance(foundations.strings.to_string(True), unicode)
+        self.assertIsInstance(foundations.strings.to_string(str("myData")), str)
+        self.assertIsInstance(foundations.strings.to_string("myData"), str)
+        self.assertIsInstance(foundations.strings.to_string(0), str)
+        self.assertIsInstance(foundations.strings.to_string(None), str)
+        self.assertIsInstance(foundations.strings.to_string(True), str)
 
 
 class TestGetNiceName(unittest.TestCase):
@@ -80,7 +80,7 @@ class TestGetNiceName(unittest.TestCase):
         Tests :func:`foundations.strings.get_nice_name` definition.
         """
 
-        self.assertIsInstance(foundations.strings.get_nice_name("testGetNiceName"), unicode)
+        self.assertIsInstance(foundations.strings.get_nice_name("testGetNiceName"), str)
         self.assertEqual(foundations.strings.get_nice_name("testGetNiceName"), "Test Get Nice Name")
         self.assertEqual(foundations.strings.get_nice_name("TestGetNiceName"), "Test Get Nice Name")
         self.assertEqual(foundations.strings.get_nice_name("_testGetNiceName"), "_Test Get Nice Name")
@@ -98,7 +98,7 @@ class TestGetVersionRank(unittest.TestCase):
         Tests :func:`foundations.strings.get_version_rank` definition.
         """
 
-        self.assertTrue(type(foundations.strings.get_version_rank("0.0.0")), (int, long))
+        self.assertTrue(type(foundations.strings.get_version_rank("0.0.0")), (int, int))
         self.assertEqual(foundations.strings.get_version_rank("0.0.0"), 0)
         self.assertEqual(foundations.strings.get_version_rank("0.1.0"), 1000000000)
         self.assertEqual(foundations.strings.get_version_rank("1.1.0"), 1001000000000)
@@ -117,7 +117,7 @@ class TestGetSplitextBasename(unittest.TestCase):
         Tests :func:`foundations.strings.get_splitext_basename` definition.
         """
 
-        self.assertIsInstance(foundations.strings.get_splitext_basename("/Users/JohnDoe/Documents"), unicode)
+        self.assertIsInstance(foundations.strings.get_splitext_basename("/Users/JohnDoe/Documents"), str)
         self.assertEqual(foundations.strings.get_splitext_basename("/Users/JohnDoe/Documents/Test.txt"), "Test")
         self.assertEqual(foundations.strings.get_splitext_basename("/Users/JohnDoe/Documents/Test"), "Test")
         self.assertEqual(foundations.strings.get_splitext_basename("/Users/JohnDoe/Documents/Test/"), "Test")
@@ -232,7 +232,7 @@ class TestReplace(unittest.TestCase):
         Tests :func:`foundations.strings.replace` definition.
         """
 
-        self.assertIsInstance(foundations.strings.replace("To@Forward|Slashes@Test|Case", {}), unicode)
+        self.assertIsInstance(foundations.strings.replace("To@Forward|Slashes@Test|Case", {}), str)
         self.assertEqual(foundations.strings.replace("To@Forward|Slashes@Test|Case", {"@": "|", "|": ":"}),
                          "To:Forward:Slashes:Test:Case")
         self.assertEqual(foundations.strings.replace("To@Forward@Slashes@Test@Case", {"@": "|", "|": "@"}),
@@ -249,7 +249,7 @@ class TestRemoveStrip(unittest.TestCase):
         Tests :func:`foundations.strings.remove_strip` definition.
         """
 
-        self.assertIsInstance(foundations.strings.remove_strip("John Doe", "John"), unicode)
+        self.assertIsInstance(foundations.strings.remove_strip("John Doe", "John"), str)
         self.assertEqual(foundations.strings.remove_strip("John Doe", "John"), "Doe")
         self.assertEqual(foundations.strings.remove_strip("John Doe", "Doe"), "John")
 
@@ -264,7 +264,7 @@ class TestToForwardSlashes(unittest.TestCase):
         Tests :func:`foundations.strings.to_forward_slashes` definition.
         """
 
-        self.assertIsInstance(foundations.strings.to_forward_slashes("To\\Forward\\Slashes\\Test\\Case"), unicode)
+        self.assertIsInstance(foundations.strings.to_forward_slashes("To\\Forward\\Slashes\\Test\\Case"), str)
         self.assertEqual(foundations.strings.to_forward_slashes("To\\Forward\\Slashes\\Test\\Case"),
                          "To/Forward/Slashes/Test/Case")
         self.assertEqual(foundations.strings.to_forward_slashes(
@@ -281,7 +281,7 @@ class TestToBackwardSlashes(unittest.TestCase):
         Tests :func:`foundations.strings.to_backward_slashes` definition.
         """
 
-        self.assertIsInstance(foundations.strings.to_backward_slashes("\\Users\\JohnDoe\\Documents"), unicode)
+        self.assertIsInstance(foundations.strings.to_backward_slashes("\\Users\\JohnDoe\\Documents"), str)
         self.assertEqual(foundations.strings.to_backward_slashes("To/Forward/Slashes/Test/Case"),
                          "To\\Forward\\Slashes\\Test\\Case")
         self.assertEqual(foundations.strings.to_backward_slashes(
@@ -298,7 +298,7 @@ class TestToPosixPath(unittest.TestCase):
         Tests :func:`foundations.strings.to_posix_path` definition.
         """
 
-        self.assertIsInstance(foundations.strings.to_posix_path("c:\\Users\\JohnDoe\\Documents"), unicode)
+        self.assertIsInstance(foundations.strings.to_posix_path("c:\\Users\\JohnDoe\\Documents"), str)
         self.assertEqual(foundations.strings.to_posix_path(
             "c:\\Users\\JohnDoe\\Documents"), "/Users/JohnDoe/Documents")
         self.assertEqual(foundations.strings.to_posix_path("\\Server\\Users\\JohnDoe\\Documents"),
@@ -315,7 +315,7 @@ class TestGetNormalizedPath(unittest.TestCase):
         Tests :func:`foundations.strings.get_normalized_path` definition.
         """
 
-        self.assertIsInstance(foundations.strings.get_normalized_path("/Users/JohnDoe/Documents"), unicode)
+        self.assertIsInstance(foundations.strings.get_normalized_path("/Users/JohnDoe/Documents"), str)
         if platform.system() == "Windows" or platform.system() == "Microsoft":
             self.assertEqual(foundations.strings.get_normalized_path("C:/Users\JohnDoe/Documents"),
                              r"C:\\Users\\JohnDoe\\Documents")
@@ -377,7 +377,7 @@ class TestGetRandomSequence(unittest.TestCase):
         Tests :func:`foundations.strings.get_random_sequence` definition.
         """
 
-        self.assertIsInstance(foundations.strings.get_random_sequence(), unicode)
+        self.assertIsInstance(foundations.strings.get_random_sequence(), str)
 
 
 if __name__ == "__main__":

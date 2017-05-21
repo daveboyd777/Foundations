@@ -14,10 +14,10 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import errno
-import SocketServer
+import socketserver
 import socket
 import threading
 
@@ -36,7 +36,7 @@ __all__ = ["LOGGER", "EchoRequestsHandler", "TCPServer"]
 LOGGER = foundations.verbose.install_logger()
 
 
-class EchoRequestsHandler(SocketServer.BaseRequestHandler):
+class EchoRequestsHandler(socketserver.BaseRequestHandler):
     """
     Defines the default echo requests handler.
     """
@@ -117,7 +117,7 @@ class TCPServer(object):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "address", value)
         self.__address = value
 
@@ -190,7 +190,7 @@ class TCPServer(object):
         """
 
         if value is not None:
-            assert issubclass(value, SocketServer.BaseRequestHandler), \
+            assert issubclass(value, socketserver.BaseRequestHandler), \
                 "'{0}' attribute: '{1}' is not 'SocketServer.BaseRequestHandler' subclass!".format("handler", value)
         self.__handler = value
         self.__handler.container = self
@@ -253,7 +253,7 @@ class TCPServer(object):
                 "{0} | '{1}' TCP Server is already online!".format(self.__class__.__name__, self))
 
         try:
-            self.__server = SocketServer.TCPServer((self.__address, self.__port), self.__handler)
+            self.__server = socketserver.TCPServer((self.__address, self.__port), self.__handler)
             self.__worker = threading.Thread(target=self.__server.serve_forever)
             self.__worker.setDaemon(True)
             self.__worker.start()

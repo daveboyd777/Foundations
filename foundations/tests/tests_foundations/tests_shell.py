@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import sys
 
@@ -750,7 +750,7 @@ class TestAnsiEscapeCodes(unittest.TestCase):
         for attribute in required_attributes:
             self.assertIn(attribute, dir(AnsiEscapeCodes))
 
-        for attribute, value in ANSI_ESCAPE_CODES.iteritems():
+        for attribute, value in ANSI_ESCAPE_CODES.items():
             self.assertEqual(value, getattr(AnsiEscapeCodes, attribute))
 
 

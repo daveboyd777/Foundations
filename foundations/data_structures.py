@@ -14,9 +14,10 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import sys
+from functools import reduce
 
 if sys.version_info[:2] <= (2, 6):
     from ordereddict import OrderedDict
@@ -322,7 +323,7 @@ class Lookup(dict):
         :rtype: object
         """
 
-        for key, data in self.iteritems():
+        for key, data in self.items():
             if data == value:
                 return key
 
@@ -336,4 +337,4 @@ class Lookup(dict):
         :rtype: object
         """
 
-        return [key for key, data in self.iteritems() if data == value]
+        return [key for key, data in self.items() if data == value]

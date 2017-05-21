@@ -14,12 +14,12 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import codecs
 import os
 import shutil
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 import foundations.common
 import foundations.verbose
@@ -93,7 +93,7 @@ class File(object):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format("path", value)
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format("path", value)
         self.__path = value
 
     @path.deleter
@@ -163,9 +163,9 @@ class File(object):
         if foundations.strings.is_website(self.__path):
             try:
                 LOGGER.debug("> Caching '{0}' online file content.".format(self.__path))
-                self.__content = urllib2.urlopen(self.__path).readlines()
+                self.__content = urllib.request.urlopen(self.__path).readlines()
                 return True
-            except urllib2.URLError as error:
+            except urllib.error.URLError as error:
                 raise foundations.exceptions.UrlReadError(
                     "!> {0} | '{1}' url is not readable: '{2}'.".format(self.__class__.__name__, self.__path, error))
         elif foundations.common.path_exists(self.__path):

@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import ast
 import functools
@@ -119,7 +119,7 @@ def extract_stack(frame, context=10, exceptionsFrameSymbol=EXCEPTIONS_FRAME_SYMB
     :rtype: list
     """
 
-    decode = lambda x: unicode(x, Constants.default_codec, Constants.codec_error)
+    decode = lambda x: str(x, Constants.default_codec, Constants.codec_error)
 
     stack = []
 
@@ -183,11 +183,11 @@ def extract_locals(trcback):
     for frame, file_name, line_number, name, context, index in stack:
         args_names, nameless, keyword = extract_arguments(frame)
         arguments, nameless_args, keyword_args, locals = OrderedDict(), [], {}, {}
-        for key, data in frame.f_locals.iteritems():
+        for key, data in frame.f_locals.items():
             if key == nameless:
-                nameless_args = map(repr, frame.f_locals.get(nameless, ()))
+                nameless_args = list(map(repr, frame.f_locals.get(nameless, ())))
             elif key == keyword:
-                keyword_args = dict((arg, repr(value)) for arg, value in frame.f_locals.get(keyword, {}).iteritems())
+                keyword_args = dict((arg, repr(value)) for arg, value in frame.f_locals.get(keyword, {}).items())
             elif key in args_names:
                 arguments[key] = repr(data)
             else:
@@ -208,8 +208,8 @@ def extract_exception(*args):
 
     cls, instance, trcback = sys.exc_info()
 
-    exceptions = filter(lambda x: issubclass(type(x), BaseException), args)
-    trcbacks = filter(lambda x: issubclass(type(x), types.TracebackType), args)
+    exceptions = [x for x in args if issubclass(type(x), BaseException)]
+    trcbacks = [x for x in args if issubclass(type(x), types.TracebackType)]
 
     cls, instance = (type(exceptions[0]), exceptions[0]) if exceptions else (cls, instance)
     trcback = trcbacks[0] if trcbacks else trcback
@@ -276,14 +276,14 @@ def format_report(cls, instance, trcback, context=1):
         frames.append("Frame '{0}' in '{1}' at line '{2}':".format(*frame))
         arguments, nameless_args, keyword_args, locals = locals
         any((arguments, nameless_args, keyword_args)) and frames.append("{0:>40}".format("Arguments:"))
-        for key, value in arguments.iteritems():
+        for key, value in arguments.items():
             frames.append("{0:>40} = {1}".format(key, value))
         for value in nameless_args:
             frames.append("{0:>40}".format(value))
-        for key, value in sorted(keyword_args.iteritems()):
+        for key, value in sorted(keyword_args.items()):
             frames.append("{0:>40} = {1}".format(key, value))
         locals and frames.append("{0:>40}".format("Locals:"))
-        for key, value in sorted(locals.iteritems()):
+        for key, value in sorted(locals.items()):
             frames.append("{0:>40} = {1}".format(key, value))
         frames.append("")
 
@@ -305,10 +305,10 @@ def base_exception_handler(*args):
     header, frames, trcback = format_report(*extract_exception(*args))
 
     LOGGER.error("!> {0}".format(Constants.logging_separators))
-    map(lambda x: LOGGER.error("!> {0}".format(x)), header)
+    list(map(lambda x: LOGGER.error("!> {0}".format(x)), header))
 
     LOGGER.error("!> {0}".format(Constants.logging_separators))
-    map(lambda x: LOGGER.error("!> {0}".format(x)), frames)
+    list(map(lambda x: LOGGER.error("!> {0}".format(x)), frames))
 
     LOGGER.error("!> {0}".format(Constants.logging_separators))
     sys.stderr.write("\n".join(trcback))
@@ -367,9 +367,8 @@ def handle_exceptions(*args):
     :rtype: object
     """
 
-    exceptions = tuple(filter(lambda x: issubclass(x, Exception),
-                              filter(lambda x: isinstance(x, (type, types.ClassType)), args)))
-    handlers = filter(lambda x: inspect.isfunction(x), args) or (base_exception_handler,)
+    exceptions = tuple([x for x in [x for x in args if isinstance(x, type)] if issubclass(x, Exception)])
+    handlers = [x for x in args if inspect.isfunction(x)] or (base_exception_handler,)
 
     def handle_exceptions_decorator(object):
         """

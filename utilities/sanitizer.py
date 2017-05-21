@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import re
 
@@ -63,7 +63,7 @@ def bleach(file):
 
         offset = 0
         for match in matches:
-            if any(map(lambda x: x in match.group("bleach"), STATEMENT_IGNORE)):
+            if any([x in match.group("bleach") for x in STATEMENT_IGNORE]):
                 continue
 
             start, end = match.start("bleach"), match.end("bleach")

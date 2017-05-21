@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import sys
 
@@ -122,21 +122,21 @@ class TestConstants(unittest.TestCase):
 
         self.assertIsInstance(Constants.verbosity_labels, tuple)
         for label in Constants.verbosity_labels:
-            self.assertIsInstance(label, unicode)
+            self.assertIsInstance(label, str)
 
     def test_logging_default_formatter_attribute(self):
         """
         Tests :attr:`foundations.globals.constants.Constants.logging_default_formatter` attribute.
         """
 
-        self.assertIsInstance(Constants.logging_default_formatter, unicode)
+        self.assertIsInstance(Constants.logging_default_formatter, str)
 
     def test_logging_separators_attribute(self):
         """
         Tests :attr:`foundations.globals.constants.Constants.logging_separators` attribute.
         """
 
-        self.assertIsInstance(Constants.logging_separators, unicode)
+        self.assertIsInstance(Constants.logging_separators, str)
 
     def test_encoding_codec_attribute(self):
         """

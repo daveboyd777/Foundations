@@ -14,7 +14,7 @@
     Portions of the code by Guido Van Rossum: http://mail.python.org/pipermail/python-dev/2008-January/076194.html
 """
 
-from __future__ import unicode_literals
+
 
 import foundations.common
 
@@ -71,7 +71,7 @@ def base_warfare(name, bases, attributes):
     assert len(bases) == 1, "{0} | '{1}' object has multiple bases!".format(__name__, name)
 
     base = foundations.common.get_first_item(bases)
-    for name, value in attributes.iteritems():
+    for name, value in attributes.items():
         if name != "__metaclass__":
             setattr(base, name, value)
     return base

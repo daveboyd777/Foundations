@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import sys
 
@@ -81,7 +81,7 @@ class TestCache(unittest.TestCase):
         cache = Cache()
         content = {"John": "Doe", "Luke": "Skywalker"}
         cache.add_content(**content)
-        for key, value in content.iteritems():
+        for key, value in content.items():
             self.assertEqual(cache.get_content(key), value)
 
     def test_flush_content(self):

@@ -15,7 +15,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import foundations.data_structures
 import foundations.exceptions

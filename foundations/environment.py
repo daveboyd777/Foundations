@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import os
 import platform
@@ -97,10 +97,10 @@ class Environment(object):
 
         if value is not None:
             assert type(value) is dict, "'{0}' attribute: '{1}' type is not 'dict'!".format("variables", value)
-            for key, element in value.iteritems():
-                assert type(key) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            for key, element in value.items():
+                assert type(key) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                     "variables", key)
-                assert type(element) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+                assert type(element) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                     "variables", element)
         self.__variables = value
 
@@ -150,7 +150,7 @@ class Environment(object):
 
         LOGGER.debug("> Object environment variables: '{0}'.".format(
             ",".join((key for key in self.__variables if key))))
-        LOGGER.debug("> Available system environment variables: '{0}'".format(os.environ.keys()))
+        LOGGER.debug("> Available system environment variables: '{0}'".format(list(os.environ.keys())))
 
         for variable in self.__variables:
             value = os.environ.get(variable, None)
@@ -182,7 +182,7 @@ class Environment(object):
 
         self.__variables.update(kwargs)
 
-        for key, value in self.__variables.iteritems():
+        for key, value in self.__variables.items():
             if value is None:
                 continue
             LOGGER.debug("> Setting environment variable '{0}' with value '{1}'.".format(key, value))
@@ -206,7 +206,7 @@ class Environment(object):
             return self.__variables[variable]
         else:
             self.get_values()
-            return foundations.common.get_first_item(self.__variables.values())
+            return foundations.common.get_first_item(list(self.__variables.values()))
 
     def set_value(self, variable, value):
         """

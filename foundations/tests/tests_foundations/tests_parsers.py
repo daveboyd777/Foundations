@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import datetime
 import os
@@ -429,7 +429,7 @@ class TestSectionsFileParser(unittest.TestCase):
 
         sections_file_parser = SectionsFileParser(IBL_SET_FILE)
         sections_file_parser.parse()
-        self.assertListEqual(sections_file_parser["Header"].keys(),
+        self.assertListEqual(list(sections_file_parser["Header"].keys()),
                              STANDARD_FILES_SECTIONS_AND_ATTRIBUTES.get("ibl_set").get("Header").get("namespaced"))
 
     def test__setitem__(self):
@@ -447,21 +447,21 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :meth:`foundations.parsers.SectionsFileParser.__iter__` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
             for key, value in sections_file_parser:
-                self.assertIn(key, STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys())
+                self.assertIn(key, list(STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys()))
 
     def test__contains__(self):
         """
         Tests :meth:`foundations.parsers.SectionsFileParser.__contains__` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
-            for key in STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys():
+            for key in list(STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys()):
                 self.assertTrue(key in sections_file_parser)
 
     def test__len__(self):
@@ -469,17 +469,17 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :meth:`foundations.parsers.SectionsFileParser.__len__` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
-            self.assertEqual(len(sections_file_parser), len(STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys()))
+            self.assertEqual(len(sections_file_parser), len(list(STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys())))
 
     def test_parse(self):
         """
         Tests :meth:`foundations.parsers.SectionsFileParser.parse` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.read()
             parseSuccess = sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
@@ -499,7 +499,7 @@ class TestSectionsFileParser(unittest.TestCase):
 
         sections_file_parser = SectionsFileParser(CHINESE_IBL_SET_FILE)
         sections_file_parser.parse()
-        for attribute, value in CHINESE_IBL_SET_FILE_RANDOM_ATTRIBUTES.iteritems():
+        for attribute, value in CHINESE_IBL_SET_FILE_RANDOM_ATTRIBUTES.items():
             self.assertEqual(value, sections_file_parser.get_value(foundations.namespace.get_leaf(attribute),
                                                                    foundations.namespace.get_root(attribute)))
 
@@ -508,11 +508,11 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :class:`foundations.parsers.SectionsFileParser` class sections consistencies.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
-            self.assertListEqual(sections_file_parser.sections.keys(),
-                                 STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys())
+            self.assertListEqual(list(sections_file_parser.sections.keys()),
+                                 list(STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys()))
             sections_file_parser.preserve_order = False
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
             for section in STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type]:
@@ -532,12 +532,12 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :class:`foundations.parsers.SectionsFileParser` class comments consistencies.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
             self.assertEqual(sections_file_parser.comments, OrderedDict())
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type], strip_comments=False)
-            for comment, value in RANDOM_COMMENTS[type].iteritems():
+            for comment, value in RANDOM_COMMENTS[type].items():
                 self.assertIn(comment, sections_file_parser.comments)
                 self.assertEqual(value["id"], sections_file_parser.comments[comment]["id"])
 
@@ -556,7 +556,7 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :class:`foundations.parsers.SectionsFileParser` class namespaces consistencies.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type],
                                        namespaces=False)
@@ -573,9 +573,9 @@ class TestSectionsFileParser(unittest.TestCase):
         sections_file_parser.parse(strip_whitespaces=False)
         for section in STRIPPING_FILE_SECTIONS_AND_ATTRIBUTES_NON_STRIPPED:
             self.assertIn(section, sections_file_parser.sections)
-            for attribute, value in STRIPPING_FILE_SECTIONS_AND_ATTRIBUTES_NON_STRIPPED[section].iteritems():
+            for attribute, value in STRIPPING_FILE_SECTIONS_AND_ATTRIBUTES_NON_STRIPPED[section].items():
                 self.assertIn(attribute, sections_file_parser.sections[section])
-                self.assertIn(value, sections_file_parser.sections[section].itervalues())
+                self.assertIn(value, iter(sections_file_parser.sections[section].values()))
 
     def test_strip_quotation_markers(self):
         """
@@ -586,9 +586,9 @@ class TestSectionsFileParser(unittest.TestCase):
         sections_file_parser.parse(strip_quotation_markers=False)
         for section in STRIPPING_FILE_SECTIONS_AND_ATTRIBUTES_STRIPPED:
             self.assertIn(section, sections_file_parser.sections)
-            for attribute, value in STRIPPING_FILE_SECTIONS_AND_ATTRIBUTES_STRIPPED[section].iteritems():
+            for attribute, value in STRIPPING_FILE_SECTIONS_AND_ATTRIBUTES_STRIPPED[section].items():
                 self.assertIn(attribute, sections_file_parser.sections[section])
-                self.assertIn(value, sections_file_parser.sections[section].itervalues())
+                self.assertIn(value, iter(sections_file_parser.sections[section].values()))
 
     def test_parsing_errors(self):
         """
@@ -606,11 +606,11 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :meth:`foundations.parsers.SectionsFileParser.section_exists` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
             self.assertTrue(sections_file_parser.section_exists(
-                STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys()[0]))
+                list(STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type].keys())[0]))
             self.assertFalse(sections_file_parser.section_exists("Unknown"))
 
     def test_attribute_exists(self):
@@ -618,7 +618,7 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :meth:`foundations.parsers.SectionsFileParser.attribute_exists` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file, preserve_order=False)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
             for attribute in RANDOM_ATTRIBUTES[type]:
@@ -634,14 +634,14 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :meth:`foundations.parsers.SectionsFileParser.get_attributes` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
             for section in STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type]:
-                self.assertListEqual(sections_file_parser.get_attributes(section,
-                                                                         strip_namespaces=True).keys(),
+                self.assertListEqual(list(sections_file_parser.get_attributes(section,
+                                                                         strip_namespaces=True).keys()),
                                      STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type][section]["stripped"])
-                self.assertListEqual(sections_file_parser.get_attributes(section).keys(),
+                self.assertListEqual(list(sections_file_parser.get_attributes(section).keys()),
                                      STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type][section]["namespaced"])
 
     def test_get_all_attributes(self):
@@ -649,24 +649,24 @@ class TestSectionsFileParser(unittest.TestCase):
         Tests :meth:`foundations.parsers.SectionsFileParser.get_all_attributes` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
             attributes = sections_file_parser.get_all_attributes()
             tests_attributes = []
             for section in STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type]:
                 tests_attributes.extend(STANDARD_FILES_SECTIONS_AND_ATTRIBUTES[type][section]["namespaced"])
-            self.assertListEqual(attributes.keys(), tests_attributes)
+            self.assertListEqual(list(attributes.keys()), tests_attributes)
 
     def test_get_value(self):
         """
         Tests :meth:`foundations.parsers.SectionsFileParser.get_value` method.
         """
 
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             sections_file_parser = SectionsFileParser(file, preserve_order=False)
             sections_file_parser.parse(raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
-            for attribute, value in RANDOM_ATTRIBUTES[type].iteritems():
+            for attribute, value in RANDOM_ATTRIBUTES[type].items():
                 self.assertEqual(
                     sections_file_parser.get_value(attribute, foundations.namespace.get_namespace(attribute,
                                                                                                   root_only=True)),
@@ -693,12 +693,12 @@ class TestSectionsFileParser(unittest.TestCase):
         """
 
         # Standard sections files.
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             read_sections_file_parser = SectionsFileParser(file)
             read_sections_file_parser.parse(strip_comments=False, raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
 
             file_descriptor, path = tempfile.mkstemp()
-            write_sections_file_parser = SectionsFileParser(unicode(path))
+            write_sections_file_parser = SectionsFileParser(str(path))
             write_sections_file_parser.sections = read_sections_file_parser.sections
             write_sections_file_parser.comments = read_sections_file_parser.comments
             write_sections_file_parser.write()
@@ -709,14 +709,14 @@ class TestSectionsFileParser(unittest.TestCase):
             os.close(file_descriptor)
 
         # Standard sections files with namespaces.
-        for type, file in STANDARD_FILES.iteritems():
+        for type, file in STANDARD_FILES.items():
             read_sections_file_parser = SectionsFileParser(file)
             read_sections_file_parser.parse(namespaces=True,
                                             strip_comments=False,
                                             raw_sections=STANDARD_FILES_RAW_SECTIONS[type])
 
             file_descriptor, path = tempfile.mkstemp()
-            write_sections_file_parser = SectionsFileParser(unicode(path))
+            write_sections_file_parser = SectionsFileParser(str(path))
             write_sections_file_parser.sections = read_sections_file_parser.sections
             write_sections_file_parser.comments = read_sections_file_parser.comments
             write_sections_file_parser.write(namespaces=True)
@@ -733,7 +733,7 @@ class TestSectionsFileParser(unittest.TestCase):
         read_sections_file_parser.parse()
 
         file_descriptor, path = tempfile.mkstemp()
-        write_sections_file_parser = SectionsFileParser(unicode(path))
+        write_sections_file_parser = SectionsFileParser(str(path))
         write_sections_file_parser.sections = read_sections_file_parser.sections
         write_sections_file_parser.comments = read_sections_file_parser.comments
         write_sections_file_parser.write()

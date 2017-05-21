@@ -13,7 +13,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import os
 import platform
@@ -137,7 +137,7 @@ class TestFile(unittest.TestCase):
         """
 
         file_descriptor, path = tempfile.mkstemp()
-        io_file = File(unicode(path))
+        io_file = File(str(path))
         self.assertIsInstance(io_file.content, list)
         io_file.content = FILE_CONTENT
         write_success = io_file.write()
@@ -152,7 +152,7 @@ class TestFile(unittest.TestCase):
         """
 
         file_descriptor, path = tempfile.mkstemp()
-        io_file = File(unicode(path))
+        io_file = File(str(path))
         self.assertIsInstance(io_file.content, list)
         io_file.content = FILE_CONTENT
         io_file.write()
@@ -168,7 +168,7 @@ class TestFile(unittest.TestCase):
         """
 
         file_descriptor, path = tempfile.mkstemp()
-        io_file = File(unicode(path))
+        io_file = File(str(path))
         self.assertIsInstance(io_file.content, list)
         io_file.content = FILE_CONTENT
         io_file.write()

@@ -14,7 +14,7 @@
     Code extracted from rotatingbackup.py written by leo.ss.pku@gmail.com
 """
 
-from __future__ import unicode_literals
+
 
 import os
 
@@ -105,7 +105,7 @@ class RotatingBackup(object):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "source", value)
             assert os.path.exists(value), "'{0}' attribute: '{1}' file doesn't exists!".format("source", value)
         self.__source = value
@@ -142,7 +142,7 @@ class RotatingBackup(object):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "destination", value)
         self.__destination = value
 

@@ -17,12 +17,12 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import itertools
 import os
 import socket
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 import foundations.verbose
 from foundations.globals.constants import Constants
@@ -208,10 +208,10 @@ def dependency_resolver(dependencies):
     items = dict((key, set(dependencies[key])) for key in dependencies)
     resolved_dependencies = []
     while items:
-        batch = set(item for value in items.values() for item in value) - set(items.keys())
-        batch.update(key for key, value in items.items() if not value)
+        batch = set(item for value in list(items.values()) for item in value) - set(items.keys())
+        batch.update(key for key, value in list(items.items()) if not value)
         resolved_dependencies.append(batch)
-        items = dict(((key, value - batch) for key, value in items.items() if value))
+        items = dict(((key, value - batch) for key, value in list(items.items()) if value))
     return resolved_dependencies
 
 
@@ -229,11 +229,11 @@ def is_internet_available(ips=CONNECTION_IPS, timeout=1.0):
 
     while ips:
         try:
-            urllib2.urlopen("http://{0}".format(ips.pop(0)), timeout=timeout)
+            urllib.request.urlopen("http://{0}".format(ips.pop(0)), timeout=timeout)
             return True
         except IndexError as error:
             continue
-        except (urllib2.URLError, socket.error) as error:
+        except (urllib.error.URLError, socket.error) as error:
             continue
     return False
 
@@ -251,7 +251,7 @@ def get_host_address(host=None, default_address=DEFAULT_HOST_IP):
     """
 
     try:
-        return unicode(socket.gethostbyname(host or socket.gethostname()),
+        return str(socket.gethostbyname(host or socket.gethostname()),
                        Constants.default_codec,
                        Constants.codec_error)
     except Exception as error:

@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import foundations.trace
 
@@ -31,7 +31,7 @@ __all__ = ["GLOBAL_RETURN_VALUE",
            "dummy2",
            "dummy3"]
 
-GLOBAL_RETURN_VALUE = range(10)
+GLOBAL_RETURN_VALUE = list(range(10))
 
 
 class Dummy(object):

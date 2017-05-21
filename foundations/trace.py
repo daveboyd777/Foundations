@@ -15,7 +15,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import ast
 import functools
@@ -302,7 +302,7 @@ def get_trace_name(object):
         for (cls, member) in members:
             if object in (cls, untracer(member)):
                 TRACE_NAMES_CACHE[object] = trace_name = \
-                    ".".join(map(get_object_name, filter(lambda x: x is not None, (module, cls, member))))
+                    ".".join(map(get_object_name, [x for x in (module, cls, member) if x is not None]))
                 break
 
     return trace_name
@@ -320,7 +320,7 @@ def get_method_name(method):
 
     name = get_object_name(method)
     if name.startswith("__") and not name.endswith("__"):
-        name = "_{0}{1}".format(get_object_name(method.im_class), name)
+        name = "_{0}{1}".format(get_object_name(method.__self__.__class__), name)
     return name
 
 
@@ -350,7 +350,7 @@ def is_class_method(method):
     if is_static_method(method):
         return False
 
-    return method.im_self is not None
+    return method.__self__ is not None
 
 
 def format_argument(argumentValue):
@@ -416,17 +416,17 @@ def tracer(object):
         :rtype: object
         """
 
-        code = object.func_code
+        code = object.__code__
         args_count = code.co_argcount
         args_names = code.co_varnames[:args_count]
-        function_defaults = object.func_defaults or list()
-        args_defaults = dict(zip(args_names[-len(function_defaults):], function_defaults))
+        function_defaults = object.__defaults__ or list()
+        args_defaults = dict(list(zip(args_names[-len(function_defaults):], function_defaults)))
 
-        positional_args = map(format_argument, zip(args_names, args))
+        positional_args = list(map(format_argument, list(zip(args_names, args))))
         defaulted_args = [format_argument((name, args_defaults[name]))
                           for name in args_names[len(args):] if name not in kwargs]
-        nameless_args = map(repr, args[args_count:])
-        keyword_args = map(format_argument, kwargs.items())
+        nameless_args = list(map(repr, args[args_count:]))
+        keyword_args = list(map(format_argument, list(kwargs.items())))
         sys.stdout.write("{0}({1})\n".format(get_trace_name(object),
                                              ", ".join(itertools.chain(positional_args,
                                                                        defaulted_args,
@@ -549,7 +549,7 @@ def trace_method(cls, method, tracer=tracer):
         return False
 
     if is_class_method(method):
-        setattr(cls, name, classmethod(tracer(method.im_func)))
+        setattr(cls, name, classmethod(tracer(method.__func__)))
     elif is_static_method(method):
         setattr(cls, name, staticmethod(tracer(method)))
     else:
@@ -843,13 +843,13 @@ def evaluate_trace_request(data, tracer=tracer):
     data = ast.literal_eval(data)
 
     if isinstance(data, str):
-        modules = dict.fromkeys(map(lambda x: x.strip(), data.split(",")), (None, None))
+        modules = dict.fromkeys([x.strip() for x in data.split(",")], (None, None))
     elif isinstance(data, list):
         modules = dict.fromkeys(data, (None, None))
     elif isinstance(data, dict):
         modules = data
 
-    for module, (pattern, flags) in modules.iteritems():
+    for module, (pattern, flags) in modules.items():
         __import__(module)
         pattern = pattern if pattern is not None else r".*"
         flags = flags if flags is not None else re.IGNORECASE

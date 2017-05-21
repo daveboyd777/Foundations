@@ -13,7 +13,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import os
 import re
@@ -179,8 +179,8 @@ class TestDictionariesWalker(unittest.TestCase):
             self.assertIn(value, yielded_values)
         for path, key, value in foundations.walkers.dictionaries_walker(nested_dictionary):
             self.assertIsInstance(path, tuple)
-            self.assertIsInstance(key, unicode)
-            self.assertIsInstance(value, unicode)
+            self.assertIsInstance(key, str)
+            self.assertIsInstance(value, str)
 
 
 class TestNodesWalker(unittest.TestCase):

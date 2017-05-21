@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import sys
 
@@ -49,7 +49,7 @@ class TestSetNamespace(unittest.TestCase):
         Tests :func:`foundations.namespace.set_namespace` definition.
         """
 
-        self.assertIsInstance(foundations.namespace.set_namespace("Namespace", "Attribute"), unicode)
+        self.assertIsInstance(foundations.namespace.set_namespace("Namespace", "Attribute"), str)
         self.assertEqual(foundations.namespace.set_namespace("Namespace", "Attribute"), "Namespace|Attribute")
         self.assertEqual(foundations.namespace.set_namespace("Namespace", "Attribute", ":"), "Namespace:Attribute")
 
@@ -64,7 +64,7 @@ class TestGetNamespace(unittest.TestCase):
         Tests :func:`foundations.namespace.get_namespace` definition.
         """
 
-        self.assertIsInstance(foundations.namespace.get_namespace("Namespace:Attribute", ":"), unicode)
+        self.assertIsInstance(foundations.namespace.get_namespace("Namespace:Attribute", ":"), str)
         self.assertEqual(foundations.namespace.get_namespace("Namespace|Attribute"), "Namespace")
         self.assertEqual(foundations.namespace.get_namespace("Namespace:Attribute", ":"), "Namespace")
         self.assertEqual(foundations.namespace.get_namespace("Namespace|Attribute|Value", root_only=True), "Namespace")
@@ -81,7 +81,7 @@ class TestRemoveNamespace(unittest.TestCase):
         Tests :func:`foundations.namespace.remove_namespace` definition.
         """
 
-        self.assertIsInstance(foundations.namespace.remove_namespace("Namespace|Attribute"), unicode)
+        self.assertIsInstance(foundations.namespace.remove_namespace("Namespace|Attribute"), str)
         self.assertEqual(foundations.namespace.remove_namespace("Namespace|Attribute"), "Attribute")
         self.assertEqual(foundations.namespace.remove_namespace("Namespace:Attribute", ":"), "Attribute")
         self.assertEqual(foundations.namespace.remove_namespace("Namespace|Attribute|Value"), "Value")

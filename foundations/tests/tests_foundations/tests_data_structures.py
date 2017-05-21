@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import pickle
 import sys
@@ -119,7 +119,7 @@ class TestOrderedStructure(unittest.TestCase):
                                                                   ("personC", "Luke")])
         self.assertIn("personA", structure)
         self.assertTrue(hasattr(structure, "personA"))
-        self.assertListEqual(["personA", "personB", "personC"], structure.keys())
+        self.assertListEqual(["personA", "personB", "personC"], list(structure.keys()))
         structure["personA"] = "Anakin"
         self.assertEquals("Anakin", structure.personA)
         structure.personA = "John"

@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import os
 import platform
@@ -86,7 +86,7 @@ class TestEnvironment(unittest.TestCase):
         self.assertIsInstance(environment.get_values(), dict)
         self.assertIsInstance(environment.get_values(variable), dict)
 
-        self.assertIsInstance(environment.get_values().get(variable), unicode)
+        self.assertIsInstance(environment.get_values().get(variable), str)
         self.assertEqual(environment.get_values()[variable], os.environ[variable])
         environment.get_values("JOHNDOE_IS_FOR_SURE_A_NON_EXISTING_SYSTEM_ENVIRONMENT_VARIABLE")
         self.assertFalse(environment.get_values()["JOHNDOE_IS_FOR_SURE_A_NON_EXISTING_SYSTEM_ENVIRONMENT_VARIABLE"])
@@ -115,7 +115,7 @@ class TestEnvironment(unittest.TestCase):
         elif platform.system() == "Linux":
             environment = Environment("HOME")
         self.assertTrue(environment.get_value())
-        self.assertIsInstance(environment.get_value(), unicode)
+        self.assertIsInstance(environment.get_value(), str)
         environment.set_values(JOHN="DOE")
         self.assertEqual(environment.get_value("JOHN"), "DOE")
         self.assertFalse(environment.get_value("JOHNDOE_IS_FOR_SURE_A_NON_EXISTING_SYSTEM_ENVIRONMENT_VARIABLE"))
@@ -142,7 +142,7 @@ class TestGetTemporaryDirectory(unittest.TestCase):
         """
 
         path = foundations.environment.get_temporary_directory()
-        self.assertIsInstance(path, unicode)
+        self.assertIsInstance(path, str)
         self.assertTrue(os.path.exists(path))
         self.assertEqual(path, tempfile.gettempdir())
 
@@ -158,7 +158,7 @@ class TestGetSystemApplicationDataDirectory(unittest.TestCase):
         """
 
         path = foundations.environment.get_system_application_data_directory()
-        self.assertIsInstance(path, unicode)
+        self.assertIsInstance(path, str)
         self.assertTrue(os.path.exists(path))
 
 
@@ -173,7 +173,7 @@ class TestGetUserApplicationDataDirectory(unittest.TestCase):
         """
 
         path = foundations.environment.get_user_application_data_directory()
-        self.assertIsInstance(path, unicode)
+        self.assertIsInstance(path, str)
 
 
 if __name__ == "__main__":

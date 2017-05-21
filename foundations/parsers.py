@@ -15,7 +15,7 @@
     Portions of the code from Fredrik Lundh: http://effbot.org/zone/element-iterparse.htm
 """
 
-from __future__ import unicode_literals
+
 
 import base64
 import datetime
@@ -204,7 +204,7 @@ class SectionsFileParser(foundations.io.File):
             assert type(value) in (tuple, list), "'{0}' attribute: '{1}' type is not 'tuple' or 'list'!".format(
                 "splitters", value)
             for element in value:
-                assert type(element) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+                assert type(element) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                     "splitters", element)
                 assert len(element) == 1, "'{0}' attribute: '{1}' has multiples characters!".format(
                     "splitter", element)
@@ -244,7 +244,7 @@ class SectionsFileParser(foundations.io.File):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "namespace_splitter", value)
             assert len(value) == 1, "'{0}' attribute: '{1}' has multiples characters!".format("namespace_splitter",
                                                                                               value)
@@ -287,7 +287,7 @@ class SectionsFileParser(foundations.io.File):
             assert type(value) in (tuple, list), "'{0}' attribute: '{1}' type is not 'tuple' or 'list'!".format(
                 "comment_limiters", value)
             for element in value:
-                assert type(element) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+                assert type(element) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                     "comment_limiters", element)
         self.__comment_limiters = value
 
@@ -323,7 +323,7 @@ class SectionsFileParser(foundations.io.File):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "comment_marker", value)
             assert not re.search(r"\w", value), "'{0}' attribute: '{1}' is an alphanumeric character!".format(
                 "comment_marker", value)
@@ -364,7 +364,7 @@ class SectionsFileParser(foundations.io.File):
             assert type(value) in (tuple, list), "'{0}' attribute: '{1}' type is not 'tuple' or 'list'!".format(
                 "quotation_markers", value)
             for element in value:
-                assert type(element) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+                assert type(element) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                     "quotation_markers", element)
                 assert len(element) == 1, "'{0}' attribute: '{1}' has multiples characters!".format("quotation_markers",
                                                                                                     element)
@@ -404,7 +404,7 @@ class SectionsFileParser(foundations.io.File):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "raw_section_content_identifier", value)
         self.__raw_section_content_identifier = value
 
@@ -440,7 +440,7 @@ class SectionsFileParser(foundations.io.File):
         """
 
         if value is not None:
-            assert type(value) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            assert type(value) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                 "defaults_section", value)
         self.__defaults_section = value
 
@@ -478,8 +478,8 @@ class SectionsFileParser(foundations.io.File):
         if value is not None:
             assert type(value) in (OrderedDict, dict), "'{0}' attribute: '{1}' type is not \
             'OrderedDict' or 'dict'!".format("sections", value)
-            for key, element in value.iteritems():
-                assert type(key) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            for key, element in value.items():
+                assert type(key) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                     "sections", key)
                 assert type(element) in (OrderedDict, dict), "'{0}' attribute: '{1}' type is not \
                 'OrderedDict' or 'dict'!".format("sections", key)
@@ -519,8 +519,8 @@ class SectionsFileParser(foundations.io.File):
         if value is not None:
             assert type(value) in (OrderedDict, dict), "'{0}' attribute: '{1}' type is not \
             'OrderedDict' or 'dict'!".format("comments", value)
-            for key, element in value.iteritems():
-                assert type(key) is unicode, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
+            for key, element in value.items():
+                assert type(key) is str, "'{0}' attribute: '{1}' type is not 'unicode'!".format(
                     "comments", key)
                 assert type(element) in (OrderedDict, dict), "'{0}' attribute: '{1}' type is not \
                 'OrderedDict' or 'dict'!".format("comments", key)
@@ -644,7 +644,7 @@ class SectionsFileParser(foundations.io.File):
         :rtype: object
         """
 
-        return self.__sections.iteritems()
+        return iter(self.__sections.items())
 
     def __contains__(self, section):
         """
@@ -896,7 +896,7 @@ class SectionsFileParser(foundations.io.File):
             return attributes
 
         if strip_namespaces:
-            for attribute, value in self.__sections[section].iteritems():
+            for attribute, value in self.__sections[section].items():
                 attributes[foundations.namespace.remove_namespace(attribute, root_only=True)] = value
         else:
             attributes.update(self.__sections[section])
@@ -927,8 +927,8 @@ class SectionsFileParser(foundations.io.File):
 
         all_attributes = OrderedDict() if self.__preserve_order else dict()
 
-        for attributes in self.__sections.itervalues():
-            for attribute, value in attributes.iteritems():
+        for attributes in self.__sections.values():
+            for attribute, value in attributes.items():
                 all_attributes[attribute] = value
         return all_attributes
 
@@ -1047,12 +1047,12 @@ class SectionsFileParser(foundations.io.File):
         if self.__defaults_section in self.__sections:
             LOGGER.debug("> Appending '{0}' default section.".format(self.__defaults_section))
             if self.__comments:
-                for comment, value in self.__comments.iteritems():
+                for comment, value in self.__comments.items():
                     if self.__defaults_section in comment:
                         value = value["content"] or ""
                         LOGGER.debug("> Appending '{0}' comment with '{1}' value.".format(comment, value))
                         self.content.append(comment_template.format(value))
-            for attribute, value in self.__sections[self.__defaults_section].iteritems():
+            for attribute, value in self.__sections[self.__defaults_section].items():
                 attribute = namespaces and attribute or foundations.namespace.remove_namespace(attribute,
                                                                                                self.__namespace_splitter,
                                                                                                root_only=True)
@@ -1065,12 +1065,12 @@ class SectionsFileParser(foundations.io.File):
             LOGGER.debug("> Appending '{0}' section.".format(section))
             self.content.append("[{0}]\n".format(section))
             if self.__comments:
-                for comment, value in self.__comments.iteritems():
+                for comment, value in self.__comments.items():
                     if section in comment:
                         value = value["content"] or ""
                         LOGGER.debug("> Appending '{0}' comment with '{1}' value.".format(comment, value))
                         self.content.append(comment_template.format(value))
-            for attribute, value in self.__sections[section].iteritems():
+            for attribute, value in self.__sections[section].items():
                 if foundations.namespace.remove_namespace(attribute) == self.__raw_section_content_identifier:
                     LOGGER.debug("> Appending '{0}' raw section content.".format(section))
                     for line in value:
@@ -1125,7 +1125,7 @@ class PlistFileParser(foundations.io.File):
                                 "key": lambda x: foundations.strings.to_string(x.text) or "",
                                 "string": lambda x: foundations.strings.to_string(x.text) or "",
                                 "data": lambda x: base64.decodestring(x.text or ""),
-                                "date": lambda x: datetime.datetime(*map(int, re.findall("\d+", x.text))),
+                                "date": lambda x: datetime.datetime(*list(map(int, re.findall("\d+", x.text)))),
                                 "true": lambda x: True,
                                 "false": lambda x: False,
                                 "real": lambda x: float(x.text),
@@ -1407,7 +1407,7 @@ def get_attribute_compound(attribute, value=None, splitter="|", binding_identifi
 
     LOGGER.debug("> Attribute: '{0}', value: '{1}'.".format(attribute, value))
 
-    if type(value) is unicode:
+    if type(value) is str:
         if splitter in value:
             value_tokens = value.split(splitter)
             if len(value_tokens) >= 3 and re.search(r"{0}\w*".format(binding_identifier), value_tokens[0]):

@@ -14,7 +14,7 @@
 
 """
 
-from __future__ import unicode_literals
+
 
 import logging
 import os
@@ -113,7 +113,7 @@ class TestIndentMessage(unittest.TestCase):
         Tests :func:`foundations.verbose.indent_message` definition.
         """
 
-        self.assertIsInstance(foundations.verbose.indent_message("message"), unicode)
+        self.assertIsInstance(foundations.verbose.indent_message("message"), str)
 
 
 class TestTracer(unittest.TestCase):
@@ -259,7 +259,7 @@ class TestSetVerbosityLevel(unittest.TestCase):
 
         foundations.verbose.install_logger()
         levels = {logging.CRITICAL: 0, logging.ERROR: 1, logging.WARNING: 2, logging.INFO: 3, logging.DEBUG: 4}
-        for level, value in levels.iteritems():
+        for level, value in levels.items():
             foundations.verbose.set_verbosity_level(value)
             self.assertEqual(level, LOGGER.level)
         foundations.verbose.uninstall_logger()
